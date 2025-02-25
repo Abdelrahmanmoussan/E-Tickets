@@ -1,0 +1,60 @@
+﻿@model IEnumerable<E_Ticket.Models.Movie>
+
+@{
+    ViewData["Title"] = "Movies List";
+}
+
+<div class="container mt-4">
+    <h2 class="text-light mb-4">Movies List</h2>
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card movie-card">
+                    <img src="~/images/movies/@item.ImgUrl" class="card-img-top movie-poster" alt="@item.Name">
+                    <div class="card-body">
+                        <h5 class="card-title text-light">@item.Name</h5>
+                        <p class="card-text text-muted">@item.Description.Substring(0, Math.Min(item.Description.Length, 100))...</p>
+                        <span class="badge @(item.MovieStatus.ToString() == "Available" ? "bg-success" : item.MovieStatus.ToString() == "Upcoming" ? "bg-warning text-dark" : "bg-danger")">
+                            @item.MovieStatus
+                        </span>
+                        <div class="mt-2">
+                            <a href="~/images/movies/@item.TrailerUrl" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-play"></i> Watch Trailer
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #141414;
+        color: white;
+    }
+
+    .movie-card {
+        background: #222;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+    .movie-poster {
+        height: 300px;
+        object-fit: cover;
+    }
+</style>
+
+

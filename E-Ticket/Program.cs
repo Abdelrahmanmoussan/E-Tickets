@@ -28,7 +28,7 @@ namespace E_Ticket
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area=Customers}/{controller=Movies}/{action=Index}");
 
             app.Run();
         }
