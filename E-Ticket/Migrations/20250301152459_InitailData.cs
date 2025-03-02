@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E_Ticket.Migrations
 {
     /// <inheritdoc />
-    public partial class initalData : Migration
+    public partial class InitailData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -115,10 +115,39 @@ namespace E_Ticket.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ActorMovies",
+                columns: table => new
+                {
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActorMovies", x => new { x.ActorId, x.MovieId });
+                    table.ForeignKey(
+                        name: "FK_ActorMovies_Actors_ActorId",
+                        column: x => x.ActorId,
+                        principalTable: "Actors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActorMovies_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ActorMovie_MoviesId",
                 table: "ActorMovie",
                 column: "MoviesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActorMovies_MovieId",
+                table: "ActorMovies",
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movies_CategoryId",
@@ -136,6 +165,9 @@ namespace E_Ticket.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ActorMovie");
+
+            migrationBuilder.DropTable(
+                name: "ActorMovies");
 
             migrationBuilder.DropTable(
                 name: "Actors");

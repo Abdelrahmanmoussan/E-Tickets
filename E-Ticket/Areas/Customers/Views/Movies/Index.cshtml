@@ -7,22 +7,31 @@
 <div class="container mt-4">
     <h2 class="text-light mb-4">Movies List</h2>
 
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    <!-- Search Bar -->
+    <div class="search-container mb-4">
+        <input type="text" id="searchBar" class="search-input" placeholder="Search for movies..." onkeyup="searchMovies()">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="moviesContainer">
         @foreach (var item in Model)
         {
-            <div class="col">
+            <div class="col movie-item">
                 <div class="card movie-card">
                     <img src="~/images/movies/@item.ImgUrl" class="card-img-top movie-poster" alt="@item.Name">
                     <div class="card-body">
                         <h5 class="card-title text-light">@item.Name</h5>
-                        <p class="card-text text-muted">@item.Description.Substring(0, Math.Min(item.Description.Length, 100))...</p>
-                        <span class="badge @(item.MovieStatus.ToString() == "Available" ? "bg-success" : item.MovieStatus.ToString() == "Upcoming" ? "bg-warning text-dark" : "bg-danger")">
-                            @item.MovieStatus
+                        <br />
+                        <h6 class="card-text text-light">Price : @item.Price EGP</h6>
+                        <span class="badge @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" : "bg-success")">
+                            @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" : "Now Showing")
                         </span>
+
                         <div class="mt-2">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">
+                            <a asp-area="Customers" asp-controller="Movies" asp-action="Details" asp-route-MovieId="@item.Id" class="btn btn-outline-info btn-sm">
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
+
                             <a href="#" target="_blank" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-play"></i> Book Ticket
                             </a>
@@ -33,6 +42,22 @@
         }
     </div>
 </div>
+
+<script>
+    function searchMovies() {
+        let input = document.getElementById("searchBar").value.toLowerCase();
+        let movies = document.getElementsByClassName("movie-item");
+
+        for (let i = 0; i < movies.length; i++) {
+            let title = movies[i].querySelector(".card-title").innerText.toLowerCase();
+            if (title.includes(input)) {
+                movies[i].style.display = "block";
+            } else {
+                movies[i].style.display = "none";
+            }
+        }
+    }
+</script>
 
 <style>
     body {
@@ -55,6 +80,40 @@
         height: 300px;
         object-fit: cover;
     }
+
+    /* Netflix-style search bar */
+    .search-container {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 40px 12px 15px;
+        border: none;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+    .search-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: white;
+        pointer-events: none;
+    }
 </style>
-
-

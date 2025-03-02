@@ -9,6 +9,8 @@
         public string ProfilePicture { get; set; }
         public string News { get; set; }
 
+        public List<ActorMovies> ActorMovies { get; set; } = new List<ActorMovies>();
+
         public List<Movie> Movies { get; set; }
     }
 }

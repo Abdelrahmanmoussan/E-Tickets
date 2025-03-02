@@ -1,3 +1,8 @@
+using E_Ticket.DataAccess;
+using E_Ticket.Repositories;
+using E_Ticket.Repositories.IRepositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace E_Ticket
 {
     public class Program
@@ -8,6 +13,14 @@ namespace E_Ticket
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            builder.Services.AddScoped<IActorRepository, ActorRepository>();
+            builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             var app = builder.Build();
 
@@ -28,7 +41,7 @@ namespace E_Ticket
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{area=Customers}/{controller=Movies}/{action=Index}");
+                pattern: "{area=Customers}/{controller=Movies}/{action=Index}/{id?}");
 
             app.Run();
         }

@@ -9,7 +9,7 @@ namespace E_Ticket.Areas.Customers.Controllers
     [Area("Customers")]
     public class HomeController : Controller
     {
-        ApplicationDbContext dbContext = new ApplicationDbContext();
+        //ApplicationDbContext dbContext = new ApplicationDbContext();
 
         private readonly ILogger<HomeController> _logger;
         

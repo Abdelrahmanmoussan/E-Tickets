@@ -15,9 +15,12 @@ namespace E_Ticket.Models
         public MovieStatus MovieStatus { get; set; }
         public int CinemaId { get; set; }
         public int CategoryId { get; set; }
+        //public int ActorId { get; set; }
 
         public Cinema Cinema { get; set; }
         public Category Category { get; set; }
+        public List<ActorMovies> ActorMovies { get; set; } = new List<ActorMovies>();
+
 
         public List<Actor> Actors { get; set; }
 

@@ -84,6 +84,14 @@
 *::after {
   box-sizing: border-box;
 }
+.navbar {
+    transition: background-color 0.3s ease-in-out;
+}
+
+    .navbar.scrolled {
+        background-color: rgba(0, 0, 0, 0.9) !important;
+    }
+
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
@@ -477,6 +485,8 @@ summary {
   display: list-item;
   cursor: pointer;
 }
+
+
 
 progress {
   vertical-align: baseline;

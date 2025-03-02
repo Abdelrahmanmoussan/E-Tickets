@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Ticket.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250225202342_initalData")]
-    partial class initalData
+    [Migration("20250301152459_InitailData")]
+    partial class InitailData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,21 @@ namespace E_Ticket.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("E_Ticket.Models.ActorMovies", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActorId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("ActorMovies");
                 });
 
             modelBuilder.Entity("E_Ticket.Models.Category", b =>
@@ -185,6 +200,25 @@ namespace E_Ticket.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_Ticket.Models.ActorMovies", b =>
+                {
+                    b.HasOne("E_Ticket.Models.Actor", "Actor")
+                        .WithMany("ActorMovies")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Ticket.Models.Movie", "Movie")
+                        .WithMany("ActorMovies")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("E_Ticket.Models.Movie", b =>
                 {
                     b.HasOne("E_Ticket.Models.Category", "Category")
@@ -204,6 +238,11 @@ namespace E_Ticket.Migrations
                     b.Navigation("Cinema");
                 });
 
+            modelBuilder.Entity("E_Ticket.Models.Actor", b =>
+                {
+                    b.Navigation("ActorMovies");
+                });
+
             modelBuilder.Entity("E_Ticket.Models.Category", b =>
                 {
                     b.Navigation("Movies");
@@ -212,6 +251,11 @@ namespace E_Ticket.Migrations
             modelBuilder.Entity("E_Ticket.Models.Cinema", b =>
                 {
                     b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("E_Ticket.Models.Movie", b =>
+                {
+                    b.Navigation("ActorMovies");
                 });
 #pragma warning restore 612, 618
         }
